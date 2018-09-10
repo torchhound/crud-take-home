@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import FullArticle from './components/FullArticle';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -15,6 +16,7 @@ ReactDOM.render(
     <Router>
         <Switch>
           <Route exact path="/" component={App} />
+          <Route exact path="/article:id" component={FullArticle} />
         </Switch>
     </Router>
   </Provider>,
