@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getArticle } from '../actions/articleActions';
+import { getArticle, editArticle } from '../actions/articleActions';
 
 class FullArticle extends Component {
+  constructor(props) {
+    super(props);
+    this.onEdit = this.onEdit.bind(this);
+  }
+
   componentDidMount() {
     this.props.dispatchGetArticle(this.props.match.params.id);
   }
 
-  render() {
-    const { article } = this.props
+  onEdit() {
+    this.props.dispatchEditArticle(document.getElementById('name').value, 
+      document.getElementById('body').value,
+      this.props.match.params.id);
+  }
 
+  render() {
+    const { article } = this.props;
     return (
       <div className="FullArticle uk-text-center uk-text-middle">
         <form>
           <fieldset className="uk-fieldset">
             <div className="uk-margin">
-              <input className="uk-input" type="text" value={article.name}/>
+              <input className="uk-input" id="name" type="text" defaultValue={article.name}/>
             </div>
-            <div class="uk-margin">
-              <textarea class="uk-textarea" rows="5" value={article.body}></textarea>
+            <div className="uk-margin">
+              <input className="uk-input" id="body" type="text" defaultValue={article.body}/>
             </div>
-             <button type="button">Edit</button>
+             <button onClick={this.onEdit} className="uk-margin-small-right" type="button">Edit</button>
+             <a href="/">Back</a>
           </fieldset>
         </form>
       </div>
@@ -32,6 +43,9 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatchGetArticle: (id) => {
       dispatch(getArticle(id));
+    },
+    dispatchEditArticle: (name, body, id) => {
+      dispatch(editArticle(name, body, id))
     }
   }
 }

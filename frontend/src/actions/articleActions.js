@@ -14,12 +14,12 @@ export const allArticlesFailure = () => ({
 });
 
 export const articleSuccess = (article) => ({
-  type: ALL_ARTICLES_SUCCESS,
+  type: ARTICLE_SUCCESS,
   article
 });
 
 export const articleFailure = () => ({
-  type: ALL_ARTICLES_FAILURE
+  type: ARTICLE_FAILURE
 });
 
 export function getAllArticles() {
@@ -27,8 +27,7 @@ export function getAllArticles() {
     fetch('/api/articles/all', {
       method: 'get',
       headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
+        'Accept': 'application/json, text/plain, */*'
       }
     }).then(res => {
         res.json().then(data => {
@@ -46,8 +45,7 @@ export function getArticle(id) {
     fetch(`/api/articles/${id}`, {
       method: 'get',
       headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
+        'Accept': 'application/json, text/plain, */*'
       }
     }).then(res => {
         res.json().then(data => {
@@ -63,6 +61,41 @@ export function getArticle(id) {
 export function postArticle(name, body) {
   return dispatch => {
     fetch('/api/articles/new', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'name': name, 'body': body})
+    })
+  }
+}
+
+export function deleteArticle(id) {
+  return dispatch => {
+    fetch(`/api/articles/delete/${id}`, {
+      method: 'delete',
+      headers: {
+        'Accept': 'application/json, text/plain, */*'
+      }
+    })
+  }
+}
+
+export function duplicateArticle(id) {
+  return dispatch => {
+    fetch(`/api/articles/duplicate/${id}`, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*'
+      }
+    })
+  }
+}
+
+export function editArticle(name, body, id) {
+  return dispatch => {
+    fetch(`/api/articles/edit/${id}`, {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain, */*',

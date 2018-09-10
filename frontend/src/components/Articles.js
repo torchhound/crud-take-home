@@ -16,11 +16,10 @@ class Articles extends Component {
   onNewSubmit() {
     this.props.dispatchPostArticle(document.getElementById('name').value, 
       document.getElementById('body').value);
-    this.props.dispatchGetAllArticles();
   }
 
   render() {
-    const { articleList } = this.props
+    const { articleList } = this.props;
 
     return (
       <div className="Articles uk-text-center uk-text-middle">
@@ -38,7 +37,7 @@ class Articles extends Component {
         </form>
         <div>
           {articleList.map((article) => {
-            return (<ArticleItem name={article.name} href={`/article/${article.id}`} />)
+            return (<ArticleItem name={article.name} id={article.id} />)
           })}
         </div>
       </div>

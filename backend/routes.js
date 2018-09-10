@@ -64,7 +64,7 @@ router.get('/articles/:id', function(req, res, next) {
       id: req.params.id
     }
   }).then(article => {
-    if (article === undefined || article.length === 0) {
+    if (article === undefined) {
       res.status(400).send([])
     } else {
       res.status(200).send(article)
@@ -78,6 +78,56 @@ router.post('/articles/new', function(req, res, next) {
     body: req.body.body
   }).then(_ => {
     res.status(200)
+  }).catch(_ => {
+    res.status(400)
+  })
+})
+
+router.delete('/articles/delete/:id', function(req, res, next) {
+  sequelize.Article.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(_ => {
+    req.status(200)
+  }).catch(_ => {
+    req.status(400)
+  })
+})
+
+router.post('/articles/edit/:id', function(req, res, next) {
+  sequelize.Article.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then(article => {
+    article.updateAttributes({
+      name: req.body.name,
+      body: req.body.body
+    }).then(_ => {
+      res.status(200)
+    }).catch(_ => {
+      res.status(400)
+    })
+  }).catch(_ => {
+    res.status(400)
+  })
+})
+
+router.post('/articles/duplicate/:id', function(req, res, next) {
+  sequelize.Article.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then(article => {
+    sequelize.Article.create({
+      name: article.name,
+      body: article.body
+    }).then(_ => {
+      res.status(200)
+    }).catch(_ => {
+      res.status(400)
+    })
   }).catch(_ => {
     res.status(400)
   })
