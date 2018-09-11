@@ -58,8 +58,8 @@ router.get('/articles/all', function(req, res, next) {
 })
 
 router.get('/articles/:id', function(req, res, next) {
+  const email = req.query.email
   sequelize.Article.findOne({
-    raw: true,
     where: {
       id: req.params.id
     }
@@ -67,6 +67,24 @@ router.get('/articles/:id', function(req, res, next) {
     if (article === undefined) {
       res.status(400).send([])
     } else {
+      if (email !== undefined && email !== null) {
+        let changed = false
+        let views = article.views
+        if (views !== [{}]) {
+          for (let view of views) {
+            if (view.email === email) {
+              view.opens = view.opens += 1
+              changed = true
+            }
+          }
+        }
+        if (changed === false) {
+          views.push({'email': email, 'opens': 1})
+        }
+        article.updateAttributes({
+          views: views
+        })
+      }
       res.status(200).send(article)
     }
   })
@@ -75,7 +93,8 @@ router.get('/articles/:id', function(req, res, next) {
 router.post('/articles/new', function(req, res, next) {
   sequelize.Article.create({
     name: req.body.name,
-    body: req.body.body
+    body: req.body.body,
+    views: [{}]
   }).then(_ => {
     res.status(200)
   }).catch(_ => {
@@ -122,7 +141,8 @@ router.post('/articles/duplicate/:id', function(req, res, next) {
   }).then(article => {
     sequelize.Article.create({
       name: article.name,
-      body: article.body
+      body: article.body,
+      views: article.views
     }).then(_ => {
       res.status(200)
     }).catch(_ => {

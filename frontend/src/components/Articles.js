@@ -36,7 +36,7 @@ class Articles extends Component {
           </fieldset>
         </form>
         <div>
-          {articleList.map((article) => {
+          {articleList.map(article => {
             return (<ArticleItem name={article.name} id={article.id} />)
           })}
         </div>

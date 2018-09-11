@@ -1,6 +1,6 @@
 # crud-take-home
 
-MVC CRUD app built with React, Redux, Express, Docker, Sequelize, and UIkit.
+CRUD app built with React, Redux, Express, Docker, Sequelize, and UIkit.
 
 # Running
 

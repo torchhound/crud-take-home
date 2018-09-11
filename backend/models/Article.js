@@ -11,7 +11,8 @@ module.exports = function (sequelize, DataTypes) {
         }
       }
     },
-    body: Sequelize.TEXT
+    body: Sequelize.TEXT,
+    views: Sequelize.JSON
   })
   return Article
 }

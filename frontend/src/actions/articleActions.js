@@ -40,14 +40,17 @@ export function getAllArticles() {
   }
 }
 
-export function getArticle(id) {
+export function getArticle(id, email = "") {
   return dispatch => {
-    fetch(`/api/articles/${id}`, {
+    const baseUrl = `/api/articles/${id}`;
+    const compositeUrl = email === "" || email === null ? baseUrl : `${baseUrl}?email=${email}`;
+    fetch(compositeUrl, {
       method: 'get',
       headers: {
         'Accept': 'application/json, text/plain, */*'
       }
     }).then(res => {
+        console.log(res);
         res.json().then(data => {
           dispatch(articleSuccess(data));
         });
